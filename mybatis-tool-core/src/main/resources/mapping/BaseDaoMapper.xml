@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yunye.dao.BaseDao">
+    <!--全数据查询-->
+    <sql id="SELECT_ALL_SQL"> * </sql>
+    <!--条件字段拼接-->
+    <sql id="CRITERIA_HELPER_SQL">
+        <where>
+            <foreach collection="criteriaList" item="criteria" separator="or">
+                <if test="criteria.criteria.size() > 0">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="condition">
+                            <choose>
+
+                                <when test="condition.noValue">
+                                    and ${condition.condition}
+                                </when>
+
+                                <when test="condition.singleValue">
+                                    and ${condition.condition} #{condition.value}
+                                </when>
+
+                                <when test="betweenValue">
+                                    and ${condition.condition} #{condition.value} and #{condition.secondValue}
+                                </when>
+
+                                <when test="listValue">
+                                    and ${condition.condition}
+                                    <foreach collection="condition.value" item="listItem" open="(" close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+
+    <select id="findOnBySqlGenerateHelp" parameterType="com.yunye.help.SqlGenerateHelp" resultType="java.util.Map">
+        SELECT
+            <choose>
+                <when test="tableColumns">
+                    ${tableColumns}
+                </when>
+                <otherwise>
+                    <include refid="SELECT_ALL_SQL"/>
+                </otherwise>
+            </choose>
+        FROM
+            ${tableName}
+            <include refid="CRITERIA_HELPER_SQL"/>
+    </select>
+</mapper>
