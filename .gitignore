@@ -23,6 +23,9 @@
 hs_err_pid*
 # target
 /target/
+/target/classes/
 
 #.ide
 /.idea/
+/mybatis-tool-core/target/
+/develop-tool-samples/mybatis-tool-samples/target/classes/application.yml
