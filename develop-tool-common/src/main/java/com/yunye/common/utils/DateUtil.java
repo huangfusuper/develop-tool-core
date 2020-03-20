@@ -152,9 +152,23 @@ public class DateUtil {
      * @param dateStr 标准时间字符串
      * @return 标准时间类型
      */
-    public static Date strToDate(String dateStr){
-        LocalDateTime parse = LocalDateTime.parse(dateStr);
+    public static Date strToDateTime(String dateStr,String dateFormat){
+        LocalDateTime parse = LocalDateTime.parse(dateStr,DateTimeFormatter.ofPattern(dateFormat));
         return localDateTimeToDate(parse);
+    }
+
+    /**
+     * 字符串转换时间
+     * @param dateStr 标准时间字符串
+     * @return 标准时间类型
+     */
+    public static Date strToDate(String dateStr,String dateFormat){
+        LocalDate parse = LocalDate.parse(dateStr,DateTimeFormatter.ofPattern(dateFormat));
+        return localDateToDate(parse);
+    }
+
+    public static void main(String[] args) {
+        strToDate("2020-12-12","yyyy-MM-dd");
     }
 
     /**
