@@ -27,8 +27,35 @@ public class DevelopStringUtils {
         return result.toString();
     }
 
+    /**
+     * 下划线转换成驼峰命名法
+     * @param underlineString 下划线格式的字符串
+     * @return 驼峰标准格式数据
+     */
+    public static String underlineToHump(String underlineString) {
+        StringBuilder sb = new StringBuilder();
+
+        boolean nextUpperCase = false;
+        for (int i = 0; i < underlineString.length(); i++) {
+            char c = underlineString.charAt(i);
+            if (c == '_') {
+                if (sb.length() > 0) {
+                    nextUpperCase = true;
+                }
+            } else {
+                if (nextUpperCase) {
+                    sb.append(Character.toUpperCase(c));
+                    nextUpperCase = false;
+                } else {
+                    sb.append(Character.toLowerCase(c));
+                }
+            }
+        }
+        return sb.toString();
+    }
+
     public static void main(String[] args) {
-        String q = humpToUnderline("UserName").substring(0, humpToUnderline("UserName").length() - 1);
+        String q = underlineToHump("_user_name");
         System.out.println(q);
     }
 }

@@ -1,7 +1,7 @@
 package com.yunye.help;
 
-import com.yunye.annotations.TableFieldName;
-import com.yunye.annotations.TableName;
+import com.yunye.common.annotations.TableFieldName;
+import com.yunye.common.annotations.TableName;
 import com.yunye.common.utils.DevelopStringUtils;
 import com.yunye.common.utils.ReflectUtils;
 import com.yunye.dto.Page;

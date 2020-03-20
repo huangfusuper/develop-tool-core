@@ -1,8 +1,9 @@
 package com.yunye.pojo;
 
-import com.yunye.annotations.TableFieldName;
-import com.yunye.annotations.TableName;
+import com.yunye.common.annotations.TableName;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * @author huangfu
@@ -11,8 +12,9 @@ import lombok.Data;
 @TableName("test")
 public class Test {
     private String id;
-    private String name;
+    private String userName;
     private String sex;
-    private String age;
+    private Long age;
     private String clazz;
+    private Date date;
 }
