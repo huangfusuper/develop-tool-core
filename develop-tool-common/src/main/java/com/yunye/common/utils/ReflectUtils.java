@@ -16,7 +16,9 @@ public class ReflectUtils {
     private static final String OBJECT_CLASS_NAME = "java.lang.object";
     private static final String INTEGER_CLASS_NAME="java.lang.Integer";
     private static final String DOUBLE_CLASS_NAME="java.lang.Double";
-    private static final String STRING_CLASS_NAME="java.lang.String";
+    /**
+     * private static final String STRING_CLASS_NAME="java.lang.String"
+     */
     private static final String LONG_CLASS_NAME="java.lang.Long";
     private static final String DATE_CLASS_NAME="java.util.Date";
     private static final String BIG_INTEGER_CLASS_NAME="java.math.BigInteger";
@@ -61,7 +63,7 @@ public class ReflectUtils {
             Map<String, String> beanMap = mapToBeanMap(map);
 
             allField.forEach(field -> {
-                String fieldName = "";
+                String fieldName;
                 String typeName = field.getType().getName();
                 TableFieldName tableFieldNameAnn = field.getAnnotation(TableFieldName.class);
                 if(tableFieldNameAnn != null){
