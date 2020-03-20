@@ -30,3 +30,4 @@ hs_err_pid*
 /mybatis-tool-core/target/
 /develop-tool-samples/mybatis-tool-samples/target/classes/application.yml
 *.iml
+/develop-tool-common/target/classes/META-INF/develop-tool-common.kotlin_module
