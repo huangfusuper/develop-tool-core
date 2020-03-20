@@ -1,14 +1,14 @@
-package com.yunye.annotations;
+package com.yunye.common.annotations;
 
 import java.lang.annotation.*;
 
 /**
- * 映射表字段
+ * 映射表名称
  * @author huangfu
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface TableFieldName {
+@Target(ElementType.TYPE)
+public @interface TableName {
     String value();
 }
