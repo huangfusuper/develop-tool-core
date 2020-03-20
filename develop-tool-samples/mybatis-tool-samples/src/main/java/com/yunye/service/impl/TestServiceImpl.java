@@ -8,6 +8,8 @@ import com.yunye.service.BaseService;
 import com.yunye.service.TestService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author huangfu
  */
@@ -23,7 +25,16 @@ public class TestServiceImpl extends BaseService<TestDao> implements TestService
         SqlGenerateHelp sqlGenerateHelp = new SqlGenerateHelp(Test.class);
         Criteria criteria = sqlGenerateHelp.createCriteria();
         criteria.andEqualTo("id",id);
-        Test one = super.findOne(sqlGenerateHelp, Test.class);
-        return one;
+        return super.findOne(sqlGenerateHelp, Test.class);
+    }
+
+    @Override
+    public List<Test> findList() {
+        SqlGenerateHelp sqlGenerateHelp = new SqlGenerateHelp(Test.class);
+        sqlGenerateHelp.setGroupByClause("sex");
+        Criteria criteria = sqlGenerateHelp.createCriteria();
+        sqlGenerateHelp.setTableColumns("sex");
+
+        return super.findList(sqlGenerateHelp,Test.class);
     }
 }
