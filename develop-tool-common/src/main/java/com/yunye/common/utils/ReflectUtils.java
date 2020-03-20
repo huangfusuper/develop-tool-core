@@ -1,8 +1,6 @@
 package com.yunye.common.utils;
 
 import com.yunye.common.annotations.TableFieldName;
-import lombok.Data;
-import lombok.ToString;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
