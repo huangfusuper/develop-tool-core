@@ -32,9 +32,13 @@ public class TestServiceImpl extends BaseService<TestDao> implements TestService
     public List<Test> findList() {
         SqlGenerateHelp sqlGenerateHelp = new SqlGenerateHelp(Test.class);
         sqlGenerateHelp.setGroupByClause("sex");
-        Criteria criteria = sqlGenerateHelp.createCriteria();
         sqlGenerateHelp.setTableColumns("sex");
 
         return super.findList(sqlGenerateHelp,Test.class);
+    }
+
+    @Override
+    public Test save(Test test) {
+        return super.save(test);
     }
 }

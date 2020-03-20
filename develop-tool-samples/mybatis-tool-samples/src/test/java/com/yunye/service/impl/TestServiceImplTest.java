@@ -2,12 +2,14 @@ package com.yunye.service.impl;
 
 
 import com.yunye.service.TestService;
+import org.apache.commons.lang3.builder.ToStringExclude;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -29,6 +31,19 @@ public class TestServiceImplTest {
         list.forEach(e ->{
             System.out.println(e);
         });
+    }
+
+    @Test
+    public void saveTest(){
+        com.yunye.pojo.Test build = com.yunye.pojo.Test.builder()
+                .id("100")
+                .age(20L)
+                .clazz("软件工程")
+                .date(new Date())
+                .sex("男")
+                .userName("5656")
+                .build();
+        System.out.println(testService.save(build));
     }
 
 }

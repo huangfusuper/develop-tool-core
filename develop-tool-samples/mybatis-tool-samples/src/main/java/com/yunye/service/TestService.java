@@ -20,4 +20,11 @@ public interface TestService {
      * @return 结果集
      */
     List<Test> findList();
+
+    /**
+     * 保存操作
+     * @param test
+     * @return
+     */
+    Test save(Test test);
 }

@@ -1,6 +1,9 @@
 package com.yunye.pojo;
 
-import com.yunye.common.annotations.TableName;
+import com.yunye.common.annotations.mybatsis.JdbcType;
+import com.yunye.common.annotations.mybatsis.TableName;
+import com.yunye.common.enums.mybatis.JdbcTypeEnum;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
@@ -10,11 +13,14 @@ import java.util.Date;
  */
 @Data
 @TableName("test")
+@Builder
 public class Test {
     private String id;
     private String userName;
     private String sex;
+    @JdbcType(JdbcTypeEnum.BIGINT)
     private Long age;
     private String clazz;
+    @JdbcType(JdbcTypeEnum.TIMESTAMP)
     private Date date;
 }
