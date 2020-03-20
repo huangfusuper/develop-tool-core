@@ -14,5 +14,5 @@ public interface BaseDao {
      * @param sqlGenerateHelp
      * @return
      */
-    Map<?,?> findOnBySqlGenerateHelp(SqlGenerateHelp sqlGenerateHelp);
+    Map<String,String> findOnBySqlGenerateHelp(SqlGenerateHelp sqlGenerateHelp);
 }
