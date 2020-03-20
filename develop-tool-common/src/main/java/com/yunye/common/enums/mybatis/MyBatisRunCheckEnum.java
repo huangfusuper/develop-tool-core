@@ -1,4 +1,4 @@
-package com.yunye.enums;
+package com.yunye.common.enums.mybatis;
 
 import com.yunye.common.enums.IEnum;
 
