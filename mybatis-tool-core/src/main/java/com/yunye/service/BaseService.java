@@ -44,4 +44,29 @@ public abstract class BaseService<D extends BaseDao> {
                 .map(entityMap -> ReflectUtils.mapToBean(entityMap, entityClass))
                 .collect(Collectors.toList());
     }
+
+    /**
+     * 保存一个数据
+     * @param entity 数据实体
+     * @param <T> 载体类型
+     * @return 数据载体
+     */
+    public <T> T save(T entity){
+        SqlGenerateHelp sqlGenerateHelp = new SqlGenerateHelp(entity);
+        this.saveAndUpdate(sqlGenerateHelp,false);
+        return entity;
+    }
+
+    /**
+     * 保存或者修改数据
+     * @param sqlGenerateHelp 条件
+     * @param isSave 是否是保存操作
+     */
+    public void saveAndUpdate(SqlGenerateHelp sqlGenerateHelp,boolean isSave){
+        if(isSave){
+            System.out.println("-------=保存操作-----");
+        }else{
+            dao.saveEntity(sqlGenerateHelp);
+        }
+    }
 }

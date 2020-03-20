@@ -23,4 +23,10 @@ public interface BaseDao {
      * @return 数据结果
      */
     List<Map<String,Object>> findAllBySqlGenerateHelp(SqlGenerateHelp sqlGenerateHelp);
+
+    /**
+     * 保存一个实体
+     * @param sqlGenerateHelp 帮助器
+     */
+    void saveEntity(SqlGenerateHelp sqlGenerateHelp);
 }

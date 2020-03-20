@@ -82,6 +82,16 @@
             <if test="orderByClause">
                 ORDER BY ${orderByClause}
             </if>
-
     </select>
+    
+    <insert id="saveEntity" parameterType="com.yunye.help.SqlGenerateHelp">
+        INSERT INTO ${tableName}
+            <foreach collection="tableFieldNameVale.keys" item="key" open="(" close=")" separator=",">
+                ${key}
+            </foreach>
+        VALUES
+            <foreach collection="tableFieldNameVale.values" item="value" open="(" close=")" separator=",">
+                #{value.value,jdbcType=${value.jdbcType}}
+            </foreach>
+    </insert>
 </mapper>

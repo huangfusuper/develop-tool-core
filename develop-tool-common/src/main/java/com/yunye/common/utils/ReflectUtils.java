@@ -1,6 +1,6 @@
 package com.yunye.common.utils;
 
-import com.yunye.common.annotations.TableFieldName;
+import com.yunye.common.annotations.mybatsis.TableFieldName;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
