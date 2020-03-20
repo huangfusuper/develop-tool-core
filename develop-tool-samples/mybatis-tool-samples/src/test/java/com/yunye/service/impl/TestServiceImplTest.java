@@ -17,7 +17,8 @@ public class TestServiceImplTest {
 
     @Test
     public void findOnById(){
-        testService.findOnById("11");
+        com.yunye.pojo.Test onById = testService.findOnById("11");
+        System.out.println(onById);
     }
 
 }

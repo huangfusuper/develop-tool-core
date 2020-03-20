@@ -51,7 +51,7 @@ public class ReflectUtils {
      * @param <T> 实体类型
      * @return 实体对象
      */
-    public static <T> T mapToBean(Map<String,String> map,Class<T> entityClass){
+    public static <T> T mapToBean(Map<String,Object> map,Class<T> entityClass){
         if(map == null){
             return null;
         }
@@ -144,11 +144,11 @@ public class ReflectUtils {
      * @param map 数据map
      * @return 标注map
      */
-    private static Map<String,String> mapToBeanMap(Map<String,String> map){
+    private static Map<String,String> mapToBeanMap(Map<String,Object> map){
         Map<String,String> entityNameMap = new HashMap<>(8);
         map.forEach((key,value) ->{
             String beanFieldName = DevelopStringUtils.underlineToHump(key);
-            entityNameMap.put(beanFieldName,value);
+            entityNameMap.put(beanFieldName,value.toString());
         });
         return entityNameMap;
     }

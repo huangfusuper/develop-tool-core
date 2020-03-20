@@ -1,5 +1,6 @@
 package com.yunye.service;
 
+import com.yunye.common.utils.ReflectUtils;
 import com.yunye.dao.BaseDao;
 import com.yunye.help.SqlGenerateHelp;
 
@@ -24,7 +25,7 @@ public abstract class BaseService<D extends BaseDao> {
      * @return 返回的实体
      */
     public <T> T findOne(SqlGenerateHelp sqlGenerateHelp,Class<T> entityClass){
-        Map<?, ?> onBySqlGenerateHelp = dao.findOnBySqlGenerateHelp(sqlGenerateHelp);
-        return null;
+        Map<String, Object> onBySqlGenerateHelp = dao.findOnBySqlGenerateHelp(sqlGenerateHelp);
+        return ReflectUtils.mapToBean(onBySqlGenerateHelp,entityClass);
     }
 }
