@@ -2,6 +2,7 @@ package com.yunye.dao;
 
 import com.yunye.help.SqlGenerateHelp;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,8 +12,15 @@ import java.util.Map;
 public interface BaseDao {
     /**
      * 查询单条数据
-     * @param sqlGenerateHelp
-     * @return
+     * @param sqlGenerateHelp 查询条件
+     * @return 数据结果
      */
     Map<String,Object> findOnBySqlGenerateHelp(SqlGenerateHelp sqlGenerateHelp);
+
+    /**
+     * 多条数据查询
+     * @param sqlGenerateHelp 查询条件
+     * @return 数据结果
+     */
+    List<Map<String,Object>> findAllBySqlGenerateHelp(SqlGenerateHelp sqlGenerateHelp);
 }

@@ -4,7 +4,9 @@ import com.yunye.common.utils.ReflectUtils;
 import com.yunye.dao.BaseDao;
 import com.yunye.help.SqlGenerateHelp;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 业务操作基类
@@ -27,5 +29,19 @@ public abstract class BaseService<D extends BaseDao> {
     public <T> T findOne(SqlGenerateHelp sqlGenerateHelp,Class<T> entityClass){
         Map<String, Object> onBySqlGenerateHelp = dao.findOnBySqlGenerateHelp(sqlGenerateHelp);
         return ReflectUtils.mapToBean(onBySqlGenerateHelp,entityClass);
+    }
+
+    /**
+     * 根据条件查询集合
+     * @param sqlGenerateHelp 查询条件
+     * @param entityClass 类型对象
+     * @param <T> 结果类型
+     * @return 结果集
+     */
+    public <T> List<T> findList(SqlGenerateHelp sqlGenerateHelp,Class<T> entityClass){
+        List<Map<String, Object>> findListMap = dao.findAllBySqlGenerateHelp(sqlGenerateHelp);
+        return findListMap.stream()
+                .map(entityMap -> ReflectUtils.mapToBean(entityMap, entityClass))
+                .collect(Collectors.toList());
     }
 }

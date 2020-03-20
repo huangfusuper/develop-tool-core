@@ -57,4 +57,31 @@
             ${tableName}
             <include refid="CRITERIA_HELPER_SQL"/>
     </select>
+
+    <select id="findAllBySqlGenerateHelp" parameterType="com.yunye.help.SqlGenerateHelp" resultType="java.util.Map">
+        SELECT
+            <if test="distinct">
+                distinct
+            </if>
+            <choose>
+                <when test="tableColumns">
+                    ${tableColumns}
+                </when>
+                <otherwise>
+                    <include refid="SELECT_ALL_SQL"/>
+                </otherwise>
+            </choose>
+        FROM
+            ${tableName}
+            <include refid="CRITERIA_HELPER_SQL"/>
+
+            <if test="groupByClause">
+                GROUP BY ${groupByClause}
+            </if>
+
+            <if test="orderByClause">
+                ORDER BY ${orderByClause}
+            </if>
+
+    </select>
 </mapper>

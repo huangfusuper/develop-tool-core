@@ -96,6 +96,9 @@ public class ReflectUtils {
      * @return 格式化好的数据
      */
     public static Object valueFormatType(String value,String typeName){
+        if(value == null){
+            return null;
+        }
         Object formatValue;
         switch (typeName){
             case INTEGER_CLASS_NAME:
