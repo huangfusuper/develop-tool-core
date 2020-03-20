@@ -56,7 +56,8 @@ public class SqlGenerateHelp {
     /**
      * 存放字段与结果的映射
      */
-    private Map<String, JavaJdbcType> tableFieldNameVale = new HashMap<>(2);
+    private List<JavaJdbcType> tableFieldNameVales = new ArrayList<>(8);
+
     /**
      * 存放一组一组的条件 or分割
      */
@@ -152,7 +153,7 @@ public class SqlGenerateHelp {
 
                 String tableFieldName = DevelopStringUtils.humpToUnderline(field.getName());
                 sb.append(tableFieldName).append(",");
-                tableFieldNameVale.put(tableFieldName,new JavaJdbcType(fieldValue,jdbcType));
+                tableFieldNameVales.add(new JavaJdbcType(tableFieldName,fieldValue,jdbcType));
             }
         }
         this.tableColumns = sb.substring(0,sb.length()-1);

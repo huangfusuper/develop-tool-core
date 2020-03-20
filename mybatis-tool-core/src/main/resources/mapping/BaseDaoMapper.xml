@@ -86,12 +86,12 @@
     
     <insert id="saveEntity" parameterType="com.yunye.help.SqlGenerateHelp">
         INSERT INTO ${tableName}
-            <foreach collection="tableFieldNameVale.keys" item="key" open="(" close=")" separator=",">
-                ${key}
+            <foreach collection="tableFieldNameVales" item="tableFieldNameVale" open="(" close=")" separator=",">
+                ${tableFieldNameVale.tableFieldName}
             </foreach>
         VALUES
-            <foreach collection="tableFieldNameVale.values" item="value" open="(" close=")" separator=",">
-                #{value.value,jdbcType=${value.jdbcType}}
+            <foreach collection="tableFieldNameVales" item="tableFieldNameVale" open="(" close=")" separator=",">
+                #{tableFieldNameVale.value,jdbcType=${tableFieldNameVale.jdbcType}}
             </foreach>
     </insert>
 </mapper>

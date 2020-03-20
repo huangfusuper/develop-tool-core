@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JavaJdbcType {
+    private String tableFieldName;
     private Object value;
     private String jdbcType;
 }

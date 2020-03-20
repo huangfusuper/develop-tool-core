@@ -12,10 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ValueTypeDto {
+    private String tableName;
     private Object value;
     private String javaType;
-
-    public void setValue(Object value) {
-        this.value = value;
-    }
 }
