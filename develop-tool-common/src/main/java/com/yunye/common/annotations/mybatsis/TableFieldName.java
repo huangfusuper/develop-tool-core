@@ -1,4 +1,4 @@
-package com.yunye.common.annotations;
+package com.yunye.common.annotations.mybatsis;
 
 import java.lang.annotation.*;
 

@@ -57,4 +57,63 @@
             ${tableName}
             <include refid="CRITERIA_HELPER_SQL"/>
     </select>
+
+    <select id="findAllBySqlGenerateHelp" parameterType="com.yunye.help.SqlGenerateHelp" resultType="java.util.Map">
+        SELECT
+            <if test="distinct">
+                distinct
+            </if>
+            <choose>
+                <when test="tableColumns">
+                    ${tableColumns}
+                </when>
+                <otherwise>
+                    <include refid="SELECT_ALL_SQL"/>
+                </otherwise>
+            </choose>
+        FROM
+            ${tableName}
+            <include refid="CRITERIA_HELPER_SQL"/>
+
+            <if test="groupByClause">
+                GROUP BY ${groupByClause}
+            </if>
+
+            <if test="orderByClause">
+                ORDER BY ${orderByClause}
+            </if>
+    </select>
+    
+    <insert id="saveEntity" parameterType="com.yunye.help.SqlGenerateHelp">
+        INSERT INTO ${tableName}
+            <foreach collection="tableFieldNameVales" item="tableFieldNameVale" open="(" close=")" separator=",">
+                ${tableFieldNameVale.tableFieldName}
+            </foreach>
+        VALUES
+            <foreach collection="tableFieldNameVales" item="tableFieldNameVale" open="(" close=")" separator=",">
+                #{tableFieldNameVale.value,jdbcType=${tableFieldNameVale.jdbcType}}
+            </foreach>
+    </insert>
+
+    <update id="updateSelectById" parameterType="com.yunye.help.SqlGenerateHelp">
+        UPDATE
+            ${tableName}
+        SET
+            <foreach collection="tableFieldNameVales" item="tableFieldNameVale"  separator=",">
+                <if test="tableFieldNameVale.value != null">
+                    ${tableFieldNameVale.tableFieldName} = #{tableFieldNameVale.value,jdbcType=${tableFieldNameVale.jdbcType}}
+                </if>
+            </foreach>
+        <include refid="CRITERIA_HELPER_SQL"/>
+    </update>
+
+    <delete id="deleteBySqlGenerateHelp" parameterType="com.yunye.help.SqlGenerateHelp">
+        DELETE FROM
+            ${tableName}
+        <include refid="CRITERIA_HELPER_SQL"/>
+    </delete>
+
+    <delete id="deleteAll" parameterType="java.lang.String">
+        DELETE FROM ${tableName}
+    </delete>
 </mapper>

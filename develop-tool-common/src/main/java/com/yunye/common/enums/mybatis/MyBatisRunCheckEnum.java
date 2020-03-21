@@ -1,4 +1,4 @@
-package com.yunye.enums;
+package com.yunye.common.enums.mybatis;
 
 import com.yunye.common.enums.IEnum;
 
@@ -7,7 +7,8 @@ import com.yunye.common.enums.IEnum;
  * @author huangfu
  */
 public enum MyBatisRunCheckEnum implements IEnum {
-    CONDITION_IS_NULL("100000","查询条件不能为Null"),
+    CONDITION_NOT_IS_NULL("200000","删除条件不能为空"),
+    TABLE_NAME_NOT_IS_NULL("200001","表名不能为空#详细请参考：com.yunye.help.SqlGenerateHelp.SqlGenerateHelp(java.lang.Class<T>)"),
     ;
 
     MyBatisRunCheckEnum(String code, String msg) {

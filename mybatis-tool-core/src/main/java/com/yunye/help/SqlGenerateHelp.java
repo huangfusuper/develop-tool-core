@@ -1,9 +1,12 @@
 package com.yunye.help;
 
-import com.yunye.common.annotations.TableFieldName;
-import com.yunye.common.annotations.TableName;
+import com.yunye.common.annotations.mybatsis.JdbcType;
+import com.yunye.common.annotations.mybatsis.TableFieldName;
+import com.yunye.common.annotations.mybatsis.TableName;
+import com.yunye.common.enums.mybatis.JdbcTypeEnum;
 import com.yunye.common.utils.DevelopStringUtils;
 import com.yunye.common.utils.ReflectUtils;
+import com.yunye.conf.JavaJdbcType;
 import com.yunye.dto.Page;
 import com.yunye.help.criteria.Criteria;
 import lombok.AllArgsConstructor;
@@ -13,9 +16,7 @@ import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * SQL生成帮助类
@@ -53,14 +54,24 @@ public class SqlGenerateHelp {
     /**
      * 存放字段与结果的映射
      */
-    private Map<String,Object> tableFieldNameVale = new HashMap<>(2);
+    private List<JavaJdbcType> tableFieldNameVales = new ArrayList<>(8);
+
     /**
      * 存放一组一组的条件 or分割
      */
-    List<Criteria> criteriaList = new ArrayList<>(2);
+    private List<Criteria> criteriaList = new ArrayList<>(2);
 
     public <T> SqlGenerateHelp(Class<T> entityClass) {
         this.parseEntity(entityClass);
+    }
+
+    /**
+     * 修改或者保存是才会调用这个
+     * @param entity 数据载体
+     * @param <T> T
+     */
+    public <T> SqlGenerateHelp(T entity){
+        this.parseEntityForUpdate(entity);
     }
 
     /**
@@ -124,17 +135,30 @@ public class SqlGenerateHelp {
      * @param <T> 实体
      */
     private <T> void parseEntityForUpdate(T entity){
+        parseEntityTableName(entity.getClass());
         Field[] selfFields = entity.getClass().getDeclaredFields();
         StringBuilder sb = new StringBuilder();
         for (Field field : selfFields) {
             Object fieldValue = ReflectUtils.getFieldValue(entity, field);
             if(fieldValue != null){
+                String jdbcType;
+                JdbcType annotation = field.getAnnotation(JdbcType.class);
+                if(annotation == null){
+                    jdbcType = JdbcTypeEnum.VARCHAR.name();
+                }else{
+                    jdbcType = annotation.value().name();
+                }
+
                 String tableFieldName = DevelopStringUtils.humpToUnderline(field.getName());
                 sb.append(tableFieldName).append(",");
-                tableFieldNameVale.put(tableFieldName,fieldValue);
+                tableFieldNameVales.add(new JavaJdbcType(tableFieldName,fieldValue,jdbcType));
             }
         }
         this.tableColumns = sb.substring(0,sb.length()-1);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(JdbcTypeEnum.VARCHAR.name());
     }
 
 }

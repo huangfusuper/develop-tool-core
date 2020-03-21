@@ -19,7 +19,6 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 # target
 /target/
@@ -30,3 +29,6 @@ hs_err_pid*
 /mybatis-tool-core/target/
 /develop-tool-samples/mybatis-tool-samples/target/classes/application.yml
 *.iml
+/develop-tool-common/target/classes/META-INF/develop-tool-common.kotlin_module
+/develop-tool-samples/mybatis-tool-samples/target/test-classes/META-INF/mybatis-tool-samples.kotlin_module
+/develop-tool-samples/mybatis-tool-samples/target/classes/META-INF/mybatis-tool-samples.kotlin_module
