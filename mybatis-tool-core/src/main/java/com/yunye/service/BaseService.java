@@ -26,7 +26,7 @@ public abstract class BaseService<D extends BaseDao> {
      * @param <T> 实体类型
      * @return 返回的实体
      */
-    public <T> T findOne(SqlGenerateHelp sqlGenerateHelp,Class<T> entityClass){
+    protected <T> T findOne(SqlGenerateHelp sqlGenerateHelp, Class<T> entityClass){
         Map<String, Object> onBySqlGenerateHelp = dao.findOnBySqlGenerateHelp(sqlGenerateHelp);
         return ReflectUtils.mapToBean(onBySqlGenerateHelp,entityClass);
     }
@@ -38,7 +38,7 @@ public abstract class BaseService<D extends BaseDao> {
      * @param <T> 结果类型
      * @return 结果集
      */
-    public <T> List<T> findList(SqlGenerateHelp sqlGenerateHelp,Class<T> entityClass){
+    protected <T> List<T> findList(SqlGenerateHelp sqlGenerateHelp, Class<T> entityClass){
         List<Map<String, Object>> findListMap = dao.findAllBySqlGenerateHelp(sqlGenerateHelp);
         return findListMap.stream()
                 .map(entityMap -> ReflectUtils.mapToBean(entityMap, entityClass))
@@ -51,10 +51,18 @@ public abstract class BaseService<D extends BaseDao> {
      * @param <T> 载体类型
      * @return 数据载体
      */
-    public <T> T save(T entity){
+    protected <T> T save(T entity){
         SqlGenerateHelp sqlGenerateHelp = new SqlGenerateHelp(entity);
         this.saveAndUpdate(sqlGenerateHelp,false);
         return entity;
+    }
+
+    /**
+     * 动态修改
+     * @param sqlGenerateHelp 条件
+     */
+    protected void updateByIdSelect(SqlGenerateHelp sqlGenerateHelp){
+        this.saveAndUpdate(sqlGenerateHelp,true);
     }
 
     /**
@@ -62,9 +70,9 @@ public abstract class BaseService<D extends BaseDao> {
      * @param sqlGenerateHelp 条件
      * @param isSave 是否是保存操作
      */
-    public void saveAndUpdate(SqlGenerateHelp sqlGenerateHelp,boolean isSave){
+    private void saveAndUpdate(SqlGenerateHelp sqlGenerateHelp, boolean isSave){
         if(isSave){
-            System.out.println("-------=保存操作-----");
+            dao.updateSelectById(sqlGenerateHelp);
         }else{
             dao.saveEntity(sqlGenerateHelp);
         }

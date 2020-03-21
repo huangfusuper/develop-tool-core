@@ -29,4 +29,10 @@ public interface BaseDao {
      * @param sqlGenerateHelp 帮助器
      */
     void saveEntity(SqlGenerateHelp sqlGenerateHelp);
+
+    /**
+     * 根据主键修改数据 动态修改
+     * @param sqlGenerateHelp 帮助器
+     */
+    void updateSelectById(SqlGenerateHelp sqlGenerateHelp);
 }

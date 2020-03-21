@@ -3,8 +3,10 @@ package com.yunye.pojo;
 import com.yunye.common.annotations.mybatsis.JdbcType;
 import com.yunye.common.annotations.mybatsis.TableName;
 import com.yunye.common.enums.mybatis.JdbcTypeEnum;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -14,6 +16,8 @@ import java.util.Date;
 @Data
 @TableName("test")
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Test {
     private String id;
     private String userName;

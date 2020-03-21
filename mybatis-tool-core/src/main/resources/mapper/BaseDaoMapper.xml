@@ -94,4 +94,16 @@
                 #{tableFieldNameVale.value,jdbcType=${tableFieldNameVale.jdbcType}}
             </foreach>
     </insert>
+
+    <update id="updateSelectById" parameterType="com.yunye.help.SqlGenerateHelp">
+        UPDATE
+            ${tableName}
+        SET
+            <foreach collection="tableFieldNameVales" item="tableFieldNameVale"  separator=",">
+                <if test="tableFieldNameVale.value != null">
+                    ${tableFieldNameVale.tableFieldName} = #{tableFieldNameVale.value,jdbcType=${tableFieldNameVale.jdbcType}}
+                </if>
+            </foreach>
+        <include refid="CRITERIA_HELPER_SQL"/>
+    </update>
 </mapper>
