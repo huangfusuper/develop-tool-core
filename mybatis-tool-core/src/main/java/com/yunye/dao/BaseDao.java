@@ -1,6 +1,7 @@
 package com.yunye.dao;
 
 import com.yunye.help.SqlGenerateHelp;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -35,4 +36,18 @@ public interface BaseDao {
      * @param sqlGenerateHelp 帮助器
      */
     void updateSelectById(SqlGenerateHelp sqlGenerateHelp);
+
+    /**
+     * 删除方法
+     * @param sqlGenerateHelp 帮助器
+     * @return 删除的数量
+     */
+    int deleteBySqlGenerateHelp(SqlGenerateHelp sqlGenerateHelp);
+
+    /**
+     * 表名称
+     * @param tableName 表名
+     * @return 删除的数量
+     */
+    int deleteAll(@Param("tableName") String tableName);
 }

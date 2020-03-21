@@ -16,9 +16,7 @@ import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * SQL生成帮助类
@@ -61,7 +59,7 @@ public class SqlGenerateHelp {
     /**
      * 存放一组一组的条件 or分割
      */
-    List<Criteria> criteriaList = new ArrayList<>(2);
+    private List<Criteria> criteriaList = new ArrayList<>(2);
 
     public <T> SqlGenerateHelp(Class<T> entityClass) {
         this.parseEntity(entityClass);
