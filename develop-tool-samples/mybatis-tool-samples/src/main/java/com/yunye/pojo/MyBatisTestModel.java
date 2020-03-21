@@ -18,7 +18,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Test {
+public class MyBatisTestModel {
     private String id;
     private String userName;
     private String sex;

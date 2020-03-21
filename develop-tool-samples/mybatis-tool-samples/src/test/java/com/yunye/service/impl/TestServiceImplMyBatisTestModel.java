@@ -1,8 +1,8 @@
 package com.yunye.service.impl;
 
 
-import com.yunye.service.TestService;
-import org.apache.commons.lang3.builder.ToStringExclude;
+import com.yunye.pojo.MyBatisTestModel;
+import com.yunye.service.MyBatisTestModelService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +14,20 @@ import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class TestServiceImplTest {
+public class TestServiceImplMyBatisTestModel {
     @Autowired
-    private TestService testService;
+    private MyBatisTestModelService testService;
 
 
     @Test
     public void findOnById(){
-        com.yunye.pojo.Test onById = testService.findOnById("100");
+        MyBatisTestModel onById = testService.findOnById("100");
         System.out.println(onById);
     }
 
     @Test
     public void findAll(){
-        List<com.yunye.pojo.Test> list = testService.findList();
+        List<MyBatisTestModel> list = testService.findList();
         list.forEach(e ->{
             System.out.println(e);
         });
@@ -35,7 +35,7 @@ public class TestServiceImplTest {
 
     @Test
     public void saveTest(){
-        com.yunye.pojo.Test build = com.yunye.pojo.Test.builder()
+        MyBatisTestModel build = MyBatisTestModel.builder()
                 .id("100")
                 .age(20L)
                 .clazz("软件工程")
@@ -48,11 +48,26 @@ public class TestServiceImplTest {
 
     @Test
     public void findList(){
-        com.yunye.pojo.Test build = com.yunye.pojo.Test.builder()
+        MyBatisTestModel build = MyBatisTestModel.builder()
                 .id("100")
                 .clazz("电子信息系")
                 .build();
         testService.update(build);
+    }
+
+    @Test
+    public void deleteById(){
+        System.out.println(testService.deleteById("100"));
+    }
+
+    @Test
+    public void deleteAll(){
+        System.out.println(testService.deleteAll("test"));
+    }
+
+    @Test
+    public void findGroup(){
+        System.out.println(testService.findAllGroupBySex());
     }
 
 }

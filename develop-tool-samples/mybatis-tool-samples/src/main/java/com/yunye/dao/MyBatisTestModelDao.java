@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
  * @author huangfu
  */
 @Repository
-public interface TestDao extends BaseDao{
+public interface MyBatisTestModelDao extends BaseDao{
 }
