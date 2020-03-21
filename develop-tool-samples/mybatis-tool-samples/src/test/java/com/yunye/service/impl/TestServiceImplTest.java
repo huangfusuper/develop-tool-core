@@ -21,7 +21,7 @@ public class TestServiceImplTest {
 
     @Test
     public void findOnById(){
-        com.yunye.pojo.Test onById = testService.findOnById("11");
+        com.yunye.pojo.Test onById = testService.findOnById("100");
         System.out.println(onById);
     }
 
@@ -44,6 +44,15 @@ public class TestServiceImplTest {
                 .userName("5656")
                 .build();
         System.out.println(testService.save(build));
+    }
+
+    @Test
+    public void findList(){
+        com.yunye.pojo.Test build = com.yunye.pojo.Test.builder()
+                .id("100")
+                .clazz("电子信息系")
+                .build();
+        testService.update(build);
     }
 
 }

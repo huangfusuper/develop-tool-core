@@ -41,4 +41,12 @@ public class TestServiceImpl extends BaseService<TestDao> implements TestService
     public Test save(Test test) {
         return super.save(test);
     }
+
+    @Override
+    public void update(Test test) {
+        SqlGenerateHelp sqlGenerateHelp = new SqlGenerateHelp(test);
+        Criteria criteria = sqlGenerateHelp.createCriteria();
+        criteria.andEqualTo("id",test.getId());
+        super.updateByIdSelect(sqlGenerateHelp);
+    }
 }

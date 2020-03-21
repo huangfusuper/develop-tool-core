@@ -27,4 +27,10 @@ public interface TestService {
      * @return
      */
     Test save(Test test);
+
+    /**
+     *
+     * @param test
+     */
+    void update(Test test);
 }
