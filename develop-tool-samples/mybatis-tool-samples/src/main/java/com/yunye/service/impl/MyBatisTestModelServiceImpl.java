@@ -1,6 +1,7 @@
 package com.yunye.service.impl;
 
 import com.yunye.dao.MyBatisTestModelDao;
+import com.yunye.dto.Page;
 import com.yunye.help.SqlGenerateHelp;
 import com.yunye.help.criteria.Criteria;
 import com.yunye.pojo.MyBatisTestModel;
@@ -29,9 +30,14 @@ public class MyBatisTestModelServiceImpl extends BaseService<MyBatisTestModelDao
     }
 
     @Override
-    public List<MyBatisTestModel> findList() {
+    public Page<MyBatisTestModel> findList() {
         SqlGenerateHelp sqlGenerateHelp = new SqlGenerateHelp(MyBatisTestModel.class);
-        return super.baseFindList(sqlGenerateHelp,MyBatisTestModel.class);
+        Page<MyBatisTestModel> page = new Page<>();
+        page.setPageSize(2);
+        sqlGenerateHelp.setPage(page);
+        List<MyBatisTestModel> myBatisTestModels = super.baseFindList(sqlGenerateHelp, MyBatisTestModel.class);
+        page.setResults(myBatisTestModels);
+        return page;
     }
 
     @Override

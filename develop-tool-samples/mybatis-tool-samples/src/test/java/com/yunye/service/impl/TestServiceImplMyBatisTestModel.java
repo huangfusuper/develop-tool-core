@@ -1,6 +1,7 @@
 package com.yunye.service.impl;
 
 
+import com.yunye.dto.Page;
 import com.yunye.pojo.MyBatisTestModel;
 import com.yunye.service.MyBatisTestModelService;
 import org.junit.Test;
@@ -27,7 +28,9 @@ public class TestServiceImplMyBatisTestModel {
 
     @Test
     public void findAll(){
-        List<MyBatisTestModel> list = testService.findList();
+        Page<MyBatisTestModel> page = testService.findList();
+        System.out.println(page);
+        List<MyBatisTestModel> list = page.getResults();
         list.forEach(e ->{
             System.out.println(e);
         });
@@ -36,14 +39,52 @@ public class TestServiceImplMyBatisTestModel {
     @Test
     public void saveTest(){
         MyBatisTestModel build = MyBatisTestModel.builder()
-                .id("100")
+                .id("102")
                 .age(20L)
                 .clazz("软件工程")
                 .date(new Date())
                 .sex("男")
                 .userName("5656")
                 .build();
+
+
         System.out.println(testService.save(build));
+
+        MyBatisTestModel build1 = MyBatisTestModel.builder()
+                .id("103")
+                .age(20L)
+                .clazz("软件工程")
+                .date(new Date())
+                .sex("男")
+                .userName("5656")
+                .build();
+
+
+        System.out.println(testService.save(build1));
+
+        MyBatisTestModel build4 = MyBatisTestModel.builder()
+                .id("104")
+                .age(20L)
+                .clazz("软件工程")
+                .date(new Date())
+                .sex("男")
+                .userName("5656")
+                .build();
+
+
+        System.out.println(testService.save(build4));
+
+        MyBatisTestModel build5 = MyBatisTestModel.builder()
+                .id("105")
+                .age(20L)
+                .clazz("软件工程")
+                .date(new Date())
+                .sex("男")
+                .userName("5656")
+                .build();
+
+
+        System.out.println(testService.save(build5));
     }
 
     @Test

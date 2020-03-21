@@ -1,5 +1,6 @@
 package com.yunye.service;
 
+import com.yunye.dto.Page;
 import com.yunye.pojo.MyBatisTestModel;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface MyBatisTestModelService {
      * 查询全部
      * @return 结果集
      */
-    List<MyBatisTestModel> findList();
+    Page<MyBatisTestModel> findList();
 
     /**
      * 保存操作
