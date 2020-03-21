@@ -95,7 +95,7 @@ public class ReflectUtils {
      * @param typeName 类型名称
      * @return 格式化好的数据
      */
-    public static Object valueFormatType(String value,String typeName){
+    private static Object valueFormatType(String value, String typeName){
         if(value == null){
             return null;
         }
@@ -133,7 +133,7 @@ public class ReflectUtils {
      * @param clazz 类的对象
      * @return 返回对象的全部属性
      */
-    public static List<Field> getAllField(Class<?> clazz){
+    private static List<Field> getAllField(Class<?> clazz){
         List<Field> fieldList = new ArrayList<>() ;
         Class<?> tempClass = clazz;
         while(tempClass != null && !tempClass.getName().toLowerCase().equals(OBJECT_CLASS_NAME)) {
@@ -156,5 +156,60 @@ public class ReflectUtils {
             entityNameMap.put(beanFieldName,value.toString());
         });
         return entityNameMap;
+    }
+
+    /**
+     * 获取对应Field的值
+     * @param obj 对象
+     * @param fieldName 属性名称
+     * @return 结果值
+     */
+    public static Object getFieldValue(Object obj, String fieldName){
+        Field field = getField(obj, fieldName);
+        Object result = null;
+        if(field != null){
+            field.setAccessible(true);
+            try {
+                result = field.get(obj);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 反射向属性赋值
+     * @param object 要赋值的对象
+     * @param fieldId 属性名称
+     * @param value 要付值的数据
+     */
+    public static void setFieldValue(Object object,String fieldId,Object value){
+        Field field = getField(object, fieldId);
+        field.setAccessible(true);
+        try {
+            field.set(object,value);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 返回对应名称的属性对象
+     * @param obj 对象
+     * @param fieldName 属性名称
+     * @return 搜索到的属性值
+     */
+    private static Field getField(Object obj,String fieldName){
+        Field searchField = null;
+        Class<?> clazz = obj.getClass();
+        List<Field> allField = getAllField(clazz);
+        for (Field field : allField) {
+            if (fieldName.equals(field.getName())) {
+                searchField = field;
+                break;
+            }
+        }
+        return searchField;
     }
 }
