@@ -11,6 +11,7 @@
       <module>mybatis-tool-core</module>
       <module>develop-tool-common</module>
       <module>develop-tool-samples</module>
+        <module>poi-tool-core</module>
     </modules>
     <packaging>pom</packaging>
 
