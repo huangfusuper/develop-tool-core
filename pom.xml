@@ -34,6 +34,8 @@
     <lombok-version>1.18.12</lombok-version>
     <commons-lang3-version>3.9</commons-lang3-version>
     <develop-tool-common-version>1.0-SNAPSHOT</develop-tool-common-version>
+    <poi-version>4.1.2</poi-version>
+
   </properties>
 
 
@@ -64,8 +66,26 @@
         <version>${develop-tool-common-version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi</artifactId>
+        <version>${poi-version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi-ooxml</artifactId>
+        <version>${poi-version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi-ooxml-schemas</artifactId>
+        <version>${poi-version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+
 
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->

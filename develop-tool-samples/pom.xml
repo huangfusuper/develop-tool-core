@@ -14,6 +14,7 @@
 
     <modules>
         <module>mybatis-tool-samples</module>
+        <module>poi-tool-samples</module>
     </modules>
 
     <properties>
