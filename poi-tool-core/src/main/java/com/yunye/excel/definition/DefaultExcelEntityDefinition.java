@@ -16,6 +16,7 @@ public class DefaultExcelEntityDefinition extends BaseExcelEntityDefinition {
     public static void main(String[] args) {
         DefaultExcelEntityDefinition defaultExcelEntityDefinition = new DefaultExcelEntityDefinition();
         defaultExcelEntityDefinition.parsingExcelEntity(Object.class);
-        System.out.println(defaultExcelEntityDefinition.getDefinePool().get("name").getColumnHidden());
+        BaseExcelEntityDefinition baseExcelEntityDefinition = (BaseExcelEntityDefinition)defaultExcelEntityDefinition.getDefinePool().get("name");
+        System.out.println(baseExcelEntityDefinition.getColumnHidden());
     }
 }

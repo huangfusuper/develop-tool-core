@@ -1,5 +1,9 @@
 package com.yunye.excel.definition.base;
 
+import com.yunye.common.enums.poi.DataTypeEnum;
+import com.yunye.common.enums.poi.DateOpportunityEnum;
+import com.yunye.excel.Import.conf.ImportExcelProperties;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,23 +15,28 @@ public abstract class BaseExcelEntityDefinition implements ExcelEntityDefinition
     /**
      * 定义字段与解析器的关系
      */
-    private Map<String,BaseExcelEntityDefinition> definePool = new ConcurrentHashMap<>(8);
+    private Map<String,ExcelEntityDefinition> definePool = new ConcurrentHashMap<>(8);
+    /**
+     * 导入的配置
+     */
+    private ImportExcelProperties importExcelProperties;
     /**
      * 列索引
      */
     private Integer columnIndex;
-    /**
-     * 是否需要边框
-     */
-    private Boolean frame = false;
+
     /**
      * 事件类型
      */
-    private String databaseFormat = "yyyy-MM-dd";
+    private String dateFormat = "yyyy-MM-dd";
     /**
      * 是否基于相同值合并同列的数据
      */
     private Boolean mergeVertical = false;
+    /**
+     * date抓换的时机  IMPORT 导入  EXPORT 导出  3.ALL
+     */
+    private DateOpportunityEnum dateOpportunity;
     /**
      * 是否自动格式化内部数据
      */
@@ -43,9 +52,9 @@ public abstract class BaseExcelEntityDefinition implements ExcelEntityDefinition
     private String simpleConversionMethodName;
 
     /**
-     * 导出的数据类型 导出类型 1 是文本 2 是图片,3 是函数,10 是数字 默认是文本
+     * 导出的数据类型
      */
-    private String exportType = "1";
+    private DataTypeEnum dataTypeEnum;
     /**
      * 数字格式化的格式
      */
@@ -75,13 +84,25 @@ public abstract class BaseExcelEntityDefinition implements ExcelEntityDefinition
      * 列高
      */
     private Integer columnHigh;
+    /**
+     * 是否需要边框
+     */
+    private Boolean frame = false;
 
-    public Map<String, BaseExcelEntityDefinition> getDefinePool() {
+    public Map<String, ExcelEntityDefinition> getDefinePool() {
         return definePool;
     }
 
-    public void setDefinePool(Map<String, BaseExcelEntityDefinition> definePool) {
+    public void setDefinePool(Map<String, ExcelEntityDefinition> definePool) {
         this.definePool = definePool;
+    }
+
+    public ImportExcelProperties getImportExcelProperties() {
+        return importExcelProperties;
+    }
+
+    public void setImportExcelProperties(ImportExcelProperties importExcelProperties) {
+        this.importExcelProperties = importExcelProperties;
     }
 
     public Integer getColumnIndex() {
@@ -92,20 +113,12 @@ public abstract class BaseExcelEntityDefinition implements ExcelEntityDefinition
         this.columnIndex = columnIndex;
     }
 
-    public Boolean getFrame() {
-        return frame;
+    public String getDateFormat() {
+        return dateFormat;
     }
 
-    public void setFrame(Boolean frame) {
-        this.frame = frame;
-    }
-
-    public String getDatabaseFormat() {
-        return databaseFormat;
-    }
-
-    public void setDatabaseFormat(String databaseFormat) {
-        this.databaseFormat = databaseFormat;
+    public void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
     }
 
     public Boolean getMergeVertical() {
@@ -114,6 +127,14 @@ public abstract class BaseExcelEntityDefinition implements ExcelEntityDefinition
 
     public void setMergeVertical(Boolean mergeVertical) {
         this.mergeVertical = mergeVertical;
+    }
+
+    public DateOpportunityEnum getDateOpportunity() {
+        return dateOpportunity;
+    }
+
+    public void setDateOpportunity(DateOpportunityEnum dateOpportunity) {
+        this.dateOpportunity = dateOpportunity;
     }
 
     public Boolean getTrimStr() {
@@ -140,12 +161,12 @@ public abstract class BaseExcelEntityDefinition implements ExcelEntityDefinition
         this.simpleConversionMethodName = simpleConversionMethodName;
     }
 
-    public String getExportType() {
-        return exportType;
+    public DataTypeEnum getDataTypeEnum() {
+        return dataTypeEnum;
     }
 
-    public void setExportType(String exportType) {
-        this.exportType = exportType;
+    public void setDataTypeEnum(DataTypeEnum dataTypeEnum) {
+        this.dataTypeEnum = dataTypeEnum;
     }
 
     public String getNumFormat() {
@@ -202,5 +223,13 @@ public abstract class BaseExcelEntityDefinition implements ExcelEntityDefinition
 
     public void setColumnHigh(Integer columnHigh) {
         this.columnHigh = columnHigh;
+    }
+
+    public Boolean getFrame() {
+        return frame;
+    }
+
+    public void setFrame(Boolean frame) {
+        this.frame = frame;
     }
 }
