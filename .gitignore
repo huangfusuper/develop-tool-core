@@ -32,3 +32,4 @@ hs_err_pid*
 /develop-tool-common/target/classes/META-INF/develop-tool-common.kotlin_module
 /develop-tool-samples/mybatis-tool-samples/target/test-classes/META-INF/mybatis-tool-samples.kotlin_module
 /develop-tool-samples/mybatis-tool-samples/target/classes/META-INF/mybatis-tool-samples.kotlin_module
+/poi-tool-core/target/classes/META-INF/poi-tool-core.kotlin_module
