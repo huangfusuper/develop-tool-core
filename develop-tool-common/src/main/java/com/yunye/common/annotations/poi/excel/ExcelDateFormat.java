@@ -13,14 +13,8 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 public @interface ExcelDateFormat {
     /**
-     * 导入时机
-     * @return 返回导入时机的枚举
-     */
-    DateOpportunityEnum dateOpportunityEnum() default DateOpportunityEnum.ALL;
-
-    /**
      * 时间格式
-     * @return
+     * @return 时间格式
      */
-    String dateFormat() default "yyyy-MM-dd";
+    String value() default "yyyy-MM-dd";
 }

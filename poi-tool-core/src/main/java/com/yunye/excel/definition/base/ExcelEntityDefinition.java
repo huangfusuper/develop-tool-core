@@ -1,5 +1,7 @@
 package com.yunye.excel.definition.base;
 
+import com.yunye.excel.model.ClassEntityDefinition;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,7 +13,7 @@ public interface ExcelEntityDefinition {
 
     /**
      * 解析excel实体对象
-     * @param entityClass 实体的类对象
+     * @return return
      */
-    void parsingExcelEntity(Class entityClass);
+    Map<String,ExcelEntityDefinition> parsingImportExcelEntity();
 }

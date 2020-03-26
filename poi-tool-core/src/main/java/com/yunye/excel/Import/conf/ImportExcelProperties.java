@@ -1,6 +1,9 @@
 package com.yunye.excel.Import.conf;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.apache.poi.util.NotImplemented;
 
 import java.util.List;
 
@@ -9,6 +12,8 @@ import java.util.List;
  * @author huangfu
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ImportExcelProperties {
     /**
      * 读取sheet的index  读取那几个sheet页面
@@ -19,6 +24,6 @@ public class ImportExcelProperties {
      */
     Integer rowStartIndex = 0;
 
-    Boolean isAllSheet = false;
+    Boolean isAllSheet;
 
 }

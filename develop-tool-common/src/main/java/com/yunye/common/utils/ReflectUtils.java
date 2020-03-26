@@ -133,7 +133,7 @@ public class ReflectUtils {
      * @param clazz 类的对象
      * @return 返回对象的全部属性
      */
-    private static List<Field> getAllField(Class<?> clazz){
+    public static List<Field> getAllField(Class<?> clazz){
         List<Field> fieldList = new ArrayList<>() ;
         Class<?> tempClass = clazz;
         while(tempClass != null && !tempClass.getName().toLowerCase().equals(OBJECT_CLASS_NAME)) {

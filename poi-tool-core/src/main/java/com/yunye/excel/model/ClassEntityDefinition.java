@@ -1,12 +1,13 @@
 package com.yunye.excel.model;
 
-import com.yunye.excel.definition.base.BaseExcelEntityDefinition;
+import com.yunye.excel.definition.base.ExcelEntityDefinition;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 类与内部字段的映射
@@ -18,5 +19,6 @@ import java.util.List;
 @Builder
 public class ClassEntityDefinition {
     private String className;
-    private List<BaseExcelEntityDefinition> baseExcelEntityDefinitions;
+    private Map<String,ExcelEntityDefinition> importExcelEntityDefinition = new ConcurrentHashMap<>(8);
+    private Map<String,ExcelEntityDefinition> exportExcelEntityDefinition = new ConcurrentHashMap<>(8);
 }

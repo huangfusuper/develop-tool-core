@@ -12,11 +12,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface ExcelImportField {
-    /**
-     * 是否需要 边框
-     * @return 返回是否需要边框 默认存在
-     */
-    boolean frame() default true;
 
     /**
      * 改属性对应数据的库的那一列
