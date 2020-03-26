@@ -27,10 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ToString
 public class DefaultImportExcelEntityDefinition extends BaseExcelEntityDefinition {
     private Class entityClass;
-    /**
-     * 导入的配置
-     */
-    private ImportExcelProperties importExcelProperties;
+
     /**
      * 列索引
      */
@@ -38,7 +35,7 @@ public class DefaultImportExcelEntityDefinition extends BaseExcelEntityDefinitio
     /**
      * 时间类型
      */
-    private String dateFormat;
+    private String dateFormat = "yyyy-MM-dd";
     /**
      * 是否自动格式化内部数据
      */
@@ -60,9 +57,8 @@ public class DefaultImportExcelEntityDefinition extends BaseExcelEntityDefinitio
      */
     private String numFormat;
 
-    public DefaultImportExcelEntityDefinition(Class entityClass,ImportExcelProperties importExcelProperties) {
+    public DefaultImportExcelEntityDefinition(Class entityClass) {
         this.entityClass = entityClass;
-        this.importExcelProperties = importExcelProperties;
     }
 
     @Override
@@ -71,6 +67,7 @@ public class DefaultImportExcelEntityDefinition extends BaseExcelEntityDefinitio
         //获取所有的属性字段
         List<Field> allField = ReflectUtils.getAllField(entityClass);
         allField.forEach( field -> {
+            //TODO 这一块需要提取出来 this当作参数会出现问题 需要重新new才可以
             String fieldName = field.getName();
             parseExcelImportField(field.getAnnotation(ExcelImportField.class));
             parseExcelDateFormat(field.getAnnotation(ExcelDateFormat.class));

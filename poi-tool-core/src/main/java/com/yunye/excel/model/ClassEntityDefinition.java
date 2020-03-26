@@ -1,5 +1,6 @@
 package com.yunye.excel.model;
 
+import com.yunye.excel.Import.conf.ImportExcelProperties;
 import com.yunye.excel.definition.base.ExcelEntityDefinition;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @Builder
 public class ClassEntityDefinition {
     private String className;
+    /**
+     * 导入的配置
+     */
+    private ImportExcelProperties importExcelProperties;
     private Map<String,ExcelEntityDefinition> importExcelEntityDefinition = new ConcurrentHashMap<>(8);
     private Map<String,ExcelEntityDefinition> exportExcelEntityDefinition = new ConcurrentHashMap<>(8);
 }

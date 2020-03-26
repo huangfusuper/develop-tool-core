@@ -129,6 +129,19 @@ public class ReflectUtils {
     }
 
     /**
+     * 根据方法名  获取方法对象
+     * @param object 类对象
+     * @param methodName 放啊名
+     * @param types 类型名称
+     * @return 方法体
+     * @throws NoSuchMethodException
+     */
+    public static Method getMethod(Object object,String methodName,Class... types) throws NoSuchMethodException {
+        Class<?> aClass = object.getClass();
+        return aClass.getMethod(methodName, types);
+    }
+
+    /**
      * 获得所有上层父类的属性（不包含object的属性）
      * @param clazz 类的对象
      * @return 返回对象的全部属性
@@ -200,7 +213,7 @@ public class ReflectUtils {
      * @param fieldName 属性名称
      * @return 搜索到的属性值
      */
-    private static Field getField(Object obj,String fieldName){
+    public static Field getField(Object obj,String fieldName){
         Field searchField = null;
         Class<?> clazz = obj.getClass();
         List<Field> allField = getAllField(clazz);
