@@ -35,14 +35,33 @@ import java.util.regex.Pattern;
  * @author huangfu
  */
 public class ImportExcel<T> {
-
+    /**
+     * 类与定义的映射
+     */
     private static final Map<String, ClassEntityDefinition> DEFINITION_POOL = new ConcurrentHashMap<>(8);
+    /**
+     * 导入的配置
+     */
     private ImportExcelProperties importExcelProperties;
+    /**
+     * 导入的解析
+     */
     private FieldDefinitionParse importDefinitionParse;
-    private FieldDefinitionParse exportDefinitionParse;
+    /**
+     * 表输入流
+     */
     private InputStream excelIn;
+    /**
+     * 密码
+     */
     private String password;
+    /**
+     * 类定义
+     */
     private Class<T> excelEntityClass;
+    /**
+     * 属性与定义的映射
+     */
     private Map<String, BaseImportExcelEntityDefinition> importExcelEntityDefinition;
     /**
      * 为了防止数据多 反射获取满 将对应的字段加一个伪缓存
@@ -56,21 +75,19 @@ public class ImportExcel<T> {
     }
 
     public ImportExcel(InputStream excelIn,String password,Class<T> excelEntityClass) {
-        this(null,null,null, excelIn, password, excelEntityClass);
+        this(null,null, excelIn, password, excelEntityClass);
     }
 
     public ImportExcel(ImportExcelProperties importExcelProperties, InputStream excelIn, Class<T> excelEntityClass) {
-        this(importExcelProperties,null,null, excelIn, null, excelEntityClass);
+        this(importExcelProperties,null, excelIn, null, excelEntityClass);
     }
 
-    public ImportExcel(ImportExcelProperties importExcelProperties, FieldDefinitionParse importDefinitionParse,
-                       FieldDefinitionParse exportDefinitionParse, InputStream excelIn,
+    public ImportExcel(ImportExcelProperties importExcelProperties, FieldDefinitionParse importDefinitionParse, InputStream excelIn,
                        String password, Class<T> excelEntityClass) {
 
 
         this.importExcelProperties = importExcelProperties;
         this.importDefinitionParse = importDefinitionParse;
-        this.exportDefinitionParse = exportDefinitionParse;
         this.excelIn = excelIn;
         this.password = password;
         this.excelEntityClass = excelEntityClass;
@@ -88,10 +105,6 @@ public class ImportExcel<T> {
         }
         if(importDefinitionParse == null){
             importDefinitionParse = new DefaultImportFieldDefinitionParse(excelEntityClass);
-        }
-
-        if(exportDefinitionParse == null){
-            exportDefinitionParse = new DefaultImportFieldDefinitionParse(excelEntityClass);
         }
         String className = excelEntityClass.getName();
 
