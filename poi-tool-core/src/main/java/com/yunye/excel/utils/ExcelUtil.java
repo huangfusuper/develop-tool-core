@@ -9,6 +9,7 @@ import com.yunye.common.utils.ReflectUtils;
 import com.yunye.common.utils.RuleCheckUtil;
 import com.yunye.excel.Import.conf.ImportExcelProperties;
 import com.yunye.excel.definition.DefaultImportExcelEntityDefinition;
+import com.yunye.excel.definition.base.BaseImportExcelEntityDefinition;
 import com.yunye.excel.definition.parse.DefaultImportFieldDefinitionParse;
 import com.yunye.excel.definition.parse.FieldDefinitionParse;
 import com.yunye.excel.model.ClassEntityDefinition;
@@ -117,7 +118,7 @@ public class ExcelUtil {
         }
         //获取属性定义
         ClassEntityDefinition classEntityDefinition = DEFINITION_POOL.get(className);
-        Map<String, DefaultImportExcelEntityDefinition> importExcelEntityDefinition = classEntityDefinition.getImportFieldDefinitionParse();
+        Map<String, BaseImportExcelEntityDefinition> importExcelEntityDefinition = classEntityDefinition.getImportFieldDefinitionParse();
         //获取读取Excel的初始配置
         ImportExcelProperties importExcelProperties = classEntityDefinition.getImportExcelProperties();
         //获取所有的sheet页
@@ -142,7 +143,7 @@ public class ExcelUtil {
      * @param <T> 数据类型
      */
     private static <T> void getSheetRowsData(Sheet sheet,List<T> entityArray,Integer startRowIndex,
-                                             Map<String, DefaultImportExcelEntityDefinition> importExcelEntityDefinition,
+                                             Map<String, BaseImportExcelEntityDefinition> importExcelEntityDefinition,
                                              Class<T> entityClass) throws IllegalAccessException, InstantiationException {
         //为了防止数据多 反射获取满 将对应的字段加一个伪缓存
         Map<String, Field> fieldCache = new HashMap<>(8);
@@ -181,7 +182,7 @@ public class ExcelUtil {
      * @param object 对应的类对象
      * @return 对应值
      */
-    private static Object formatCellValue(Cell cell,DefaultImportExcelEntityDefinition defaultImportExcelEntityDefinition,
+    private static Object formatCellValue(Cell cell,BaseImportExcelEntityDefinition defaultImportExcelEntityDefinition,
                                           Object object,Field field){
         Object value = null;
         String dataType = defaultImportExcelEntityDefinition.getDataTypeEnum().getDataType();
@@ -225,7 +226,7 @@ public class ExcelUtil {
      * @param object 对应的类对象
      * @return 返回格式化后的数据
      */
-    private static Object formatTextData(String textData,DefaultImportExcelEntityDefinition defaultImportExcelEntityDefinition,
+    private static Object formatTextData(String textData,BaseImportExcelEntityDefinition defaultImportExcelEntityDefinition,
                                         Object object){
         if (StringUtils.isEmpty(textData)) {
             return textData;

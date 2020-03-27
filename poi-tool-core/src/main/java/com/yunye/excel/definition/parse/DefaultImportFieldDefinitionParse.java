@@ -4,7 +4,7 @@ import com.yunye.common.annotations.poi.excel.ExcelDateFormat;
 import com.yunye.common.annotations.poi.excel.ExcelImportField;
 import com.yunye.common.utils.ReflectUtils;
 import com.yunye.excel.definition.DefaultImportExcelEntityDefinition;
-import com.yunye.excel.definition.parse.BaseFieldDefinitionParse;
+import com.yunye.excel.definition.base.BaseImportExcelEntityDefinition;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -23,13 +23,13 @@ public class DefaultImportFieldDefinitionParse extends BaseFieldDefinitionParse 
     }
 
     @Override
-    public Map<String, DefaultImportExcelEntityDefinition> parsingImportExcelEntity() {
-        Map<String,DefaultImportExcelEntityDefinition> map = new ConcurrentHashMap<>(8);
+    public Map<String, BaseImportExcelEntityDefinition> parsingImportExcelEntity() {
+        Map<String, BaseImportExcelEntityDefinition> map = new ConcurrentHashMap<>(8);
         //获取所有的属性字段
         List<Field> allField = ReflectUtils.getAllField(entityClass);
         allField.forEach( field -> {
             if(field.isAnnotationPresent(ExcelImportField.class) || field.isAnnotationPresent(ExcelDateFormat.class)){
-                DefaultImportExcelEntityDefinition defaultImportExcelEntityDefinition = new DefaultImportExcelEntityDefinition();
+                BaseImportExcelEntityDefinition defaultImportExcelEntityDefinition = new DefaultImportExcelEntityDefinition();
                 String fieldName = field.getName();
                 parseExcelImportField(field.getAnnotation(ExcelImportField.class),defaultImportExcelEntityDefinition);
                 parseExcelDateFormat(field.getAnnotation(ExcelDateFormat.class),defaultImportExcelEntityDefinition);
@@ -44,7 +44,7 @@ public class DefaultImportFieldDefinitionParse extends BaseFieldDefinitionParse 
      * 解析 ExcelImportField 注解
      * @param excelImportField 对应注解
      */
-    private void parseExcelImportField(ExcelImportField excelImportField,DefaultImportExcelEntityDefinition definition){
+    private void parseExcelImportField(ExcelImportField excelImportField,BaseImportExcelEntityDefinition definition){
         if(excelImportField != null){
             definition.setColumnIndex(excelImportField.columnIndex());
             definition.setDataTypeEnum(excelImportField.dataTypeEnum());
@@ -62,7 +62,7 @@ public class DefaultImportFieldDefinitionParse extends BaseFieldDefinitionParse 
      * 分割数组  将数组分割为Map
      * @param sourceData 元数据
      */
-    private void parseReplace(String[] sourceData,DefaultImportExcelEntityDefinition defaultImportExcelEntityDefinition){
+    private void parseReplace(String[] sourceData,BaseImportExcelEntityDefinition defaultImportExcelEntityDefinition){
         if (defaultImportExcelEntityDefinition.getValueMap() == null){
             defaultImportExcelEntityDefinition.setValueMap(new ConcurrentHashMap<>(8));
             defaultImportExcelEntityDefinition.setValueMap(new ConcurrentHashMap<>(8));
@@ -77,7 +77,7 @@ public class DefaultImportFieldDefinitionParse extends BaseFieldDefinitionParse 
      * 解析 ExcelDateFormat 注解
      * @param excelDateFormat 对应注解
      */
-    private void parseExcelDateFormat(ExcelDateFormat excelDateFormat,DefaultImportExcelEntityDefinition defaultImportExcelEntityDefinition){
+    private void parseExcelDateFormat(ExcelDateFormat excelDateFormat,BaseImportExcelEntityDefinition defaultImportExcelEntityDefinition){
         if (excelDateFormat != null) {
             defaultImportExcelEntityDefinition.setDateFormat(excelDateFormat.value());
         }

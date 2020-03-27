@@ -1,19 +1,21 @@
 package com.yunye.excel.definition;
 
 import com.yunye.common.enums.poi.DataTypeEnum;
+import com.yunye.excel.definition.base.BaseImportExcelEntityDefinition;
 import lombok.*;
 
 import java.util.Map;
 
 /**
- * 默认的解析器
+ * 默认的导入解析器
  * @author huangfu
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @ToString
 @AllArgsConstructor
-public class DefaultImportExcelEntityDefinition {
+public class DefaultImportExcelEntityDefinition extends BaseImportExcelEntityDefinition {
 
     /**
      * 列索引
