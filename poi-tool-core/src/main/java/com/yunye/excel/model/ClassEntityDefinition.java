@@ -1,7 +1,8 @@
 package com.yunye.excel.model;
 
 import com.yunye.excel.Import.conf.ImportExcelProperties;
-import com.yunye.excel.definition.base.ExcelEntityDefinition;
+import com.yunye.excel.definition.DefaultImportExcelEntityDefinition;
+import com.yunye.excel.definition.parse.DefaultImportFieldDefinitionParse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +25,6 @@ public class ClassEntityDefinition {
      * 导入的配置
      */
     private ImportExcelProperties importExcelProperties;
-    private Map<String,ExcelEntityDefinition> importExcelEntityDefinition = new ConcurrentHashMap<>(8);
-    private Map<String,ExcelEntityDefinition> exportExcelEntityDefinition = new ConcurrentHashMap<>(8);
+    private Map<String, DefaultImportExcelEntityDefinition> importFieldDefinitionParse = new ConcurrentHashMap<>(8);
+    private Map<String, DefaultImportExcelEntityDefinition> exportFieldDefinitionParse = new ConcurrentHashMap<>(8);
 }
