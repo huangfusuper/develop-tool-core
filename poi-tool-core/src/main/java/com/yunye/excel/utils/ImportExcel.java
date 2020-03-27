@@ -56,13 +56,16 @@ public class ImportExcel<T> {
     }
 
     public ImportExcel(InputStream excelIn,String password,Class<T> excelEntityClass) {
-        this(null,null,null, excelIn, password, excelEntityClass, null);
+        this(null,null,null, excelIn, password, excelEntityClass);
     }
 
-    public ImportExcel(ImportExcelProperties importExcelProperties,FieldDefinitionParse importDefinitionParse,
+    public ImportExcel(ImportExcelProperties importExcelProperties, InputStream excelIn, Class<T> excelEntityClass) {
+        this(importExcelProperties,null,null, excelIn, null, excelEntityClass);
+    }
+
+    public ImportExcel(ImportExcelProperties importExcelProperties, FieldDefinitionParse importDefinitionParse,
                        FieldDefinitionParse exportDefinitionParse, InputStream excelIn,
-                       String password, Class<T> excelEntityClass,
-                       Map<String, BaseImportExcelEntityDefinition> importExcelEntityDefinition) {
+                       String password, Class<T> excelEntityClass) {
 
 
         this.importExcelProperties = importExcelProperties;
@@ -71,7 +74,6 @@ public class ImportExcel<T> {
         this.excelIn = excelIn;
         this.password = password;
         this.excelEntityClass = excelEntityClass;
-        this.importExcelEntityDefinition = importExcelEntityDefinition;
     }
 
     /**
