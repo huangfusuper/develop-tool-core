@@ -1,6 +1,6 @@
 package com.yunye.excel.utils;
 
-import com.sun.istack.internal.Nullable;
+import com.yunye.common.annotations.poi.excel.ExcelImportField;
 import com.yunye.common.enums.poi.DataTypeEnum;
 import com.yunye.common.exception.ExceptionModel;
 import com.yunye.common.exception.PoiToolException;
@@ -8,14 +8,18 @@ import com.yunye.common.utils.DateUtil;
 import com.yunye.common.utils.ReflectUtils;
 import com.yunye.common.utils.RuleCheckUtil;
 import com.yunye.excel.Import.conf.ImportExcelProperties;
-import com.yunye.excel.definition.DefaultImportExcelEntityDefinition;
 import com.yunye.excel.definition.base.BaseImportExcelEntityDefinition;
 import com.yunye.excel.definition.parse.DefaultImportFieldDefinitionParse;
 import com.yunye.excel.definition.parse.FieldDefinitionParse;
 import com.yunye.excel.model.ClassEntityDefinition;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -30,51 +34,55 @@ import java.util.regex.Pattern;
  * Excel的操作对象
  * @author huangfu
  */
-public class ExcelUtil {
+public class ImportExcel<T> {
 
     private static final Map<String, ClassEntityDefinition> DEFINITION_POOL = new ConcurrentHashMap<>(8);
-    private static final ImportExcelProperties DEFAULT_IMPORT_EXCEL_PROPERTIES = new ImportExcelProperties(null,0,true);
-
+    private ImportExcelProperties importExcelProperties;
+    private FieldDefinitionParse importDefinitionParse;
+    private FieldDefinitionParse exportDefinitionParse;
+    private InputStream excelIn;
+    private String password;
+    private Class<T> excelEntityClass;
+    private Map<String, BaseImportExcelEntityDefinition> importExcelEntityDefinition;
     /**
-     * 解析Excel
-     * @param excelEntityClass 对应的实体类对象
-     * @param <T> 返回类型
-     * @return 返回Excel数据
+     * 为了防止数据多 反射获取满 将对应的字段加一个伪缓存
      */
-    public static <T> List<T> importExcel(InputStream excelIn, Class<T> excelEntityClass){
-        return importExcel(excelIn,excelEntityClass,null);
+    private Map<String, Field> fieldCache = new HashMap<>(8);
+
+
+
+    public ImportExcel(InputStream excelIn,Class<T> excelEntityClass) {
+        this(excelIn,null, excelEntityClass);
+    }
+
+    public ImportExcel(InputStream excelIn,String password,Class<T> excelEntityClass) {
+        this(null,null,null, excelIn, password, excelEntityClass, null);
+    }
+
+    public ImportExcel(ImportExcelProperties importExcelProperties,FieldDefinitionParse importDefinitionParse,
+                       FieldDefinitionParse exportDefinitionParse, InputStream excelIn,
+                       String password, Class<T> excelEntityClass,
+                       Map<String, BaseImportExcelEntityDefinition> importExcelEntityDefinition) {
+
+
+        this.importExcelProperties = importExcelProperties;
+        this.importDefinitionParse = importDefinitionParse;
+        this.exportDefinitionParse = exportDefinitionParse;
+        this.excelIn = excelIn;
+        this.password = password;
+        this.excelEntityClass = excelEntityClass;
+        this.importExcelEntityDefinition = importExcelEntityDefinition;
     }
 
     /**
      * 解析Excel
-     * @param excelEntityClass 对应的实体类对象
-     * @param importExcelProperties 导入Excel的配置
-     * @param <T> 返回类型
      * @return 返回Excel数据
      */
-    public static <T> List<T> importExcel(InputStream excelIn, Class<T> excelEntityClass,
-                                          @Nullable ImportExcelProperties importExcelProperties){
-        return importExcel(excelIn,null,excelEntityClass,importExcelProperties,null,null);
-    }
-    /**
-     * 解析Excel
-     * @param excelEntityClass 对应的实体类对象
-     * @param importExcelProperties 导入Excel的配置
-     * @param importDefinitionParse 导入定义类对象
-     * @param exportDefinitionParse 导出定义类对象
-     * @param password 密码
-     * @param <T> 返回类型
-     * @return 返回Excel数据
-     */
-    public static <T> List<T> importExcel(InputStream excelIn, @Nullable String password ,
-                                          Class<T> excelEntityClass,
-                                          @Nullable ImportExcelProperties importExcelProperties,
-                                          @Nullable FieldDefinitionParse importDefinitionParse,
-                                          @Nullable FieldDefinitionParse exportDefinitionParse){
+    public List<T> importExcel(){
 
         RuleCheckUtil.objectNotNull(excelEntityClass,new ExceptionModel("30000001","Excel映射实体类对象不能为null!"));
         if(importExcelProperties == null){
-            importExcelProperties = DEFAULT_IMPORT_EXCEL_PROPERTIES;
+            importExcelProperties = new ImportExcelProperties(null,0,true);;
         }
         if(importDefinitionParse == null){
             importDefinitionParse = new DefaultImportFieldDefinitionParse(excelEntityClass);
@@ -86,11 +94,11 @@ public class ExcelUtil {
         String className = excelEntityClass.getName();
 
         if(!DEFINITION_POOL.containsKey(className)){
-            setPool(className,importExcelProperties,importDefinitionParse,exportDefinitionParse);
+            setPool();
         }
 
         try {
-            return parseExcel(excelIn,password,excelEntityClass);
+            return parseExcel();
         } catch (IOException e) {
             e.printStackTrace();
             throw new PoiToolException(e);
@@ -102,32 +110,28 @@ public class ExcelUtil {
 
     /**
      * 解析加密Excel
-     * @param excelIn Excel文件流
-     * @param passWord 文件密码
-     * @param <T> 返回数据类型
      * @return 返回数据
      * @throws IOException 异常
      */
-    private static <T> List<T> parseExcel(InputStream excelIn,String passWord,Class<T> excelEntityClass) throws IOException {
+    private List<T> parseExcel() throws IOException {
         String className = excelEntityClass.getName();
         Workbook workbook;
-        if(StringUtils.isBlank(passWord)){
+        if(StringUtils.isBlank(password)){
             workbook = WorkbookFactory.create(excelIn);
         }else{
-            workbook = WorkbookFactory.create(excelIn,passWord);
+            workbook = WorkbookFactory.create(excelIn,password);
         }
         //获取属性定义
         ClassEntityDefinition classEntityDefinition = DEFINITION_POOL.get(className);
-        Map<String, BaseImportExcelEntityDefinition> importExcelEntityDefinition = classEntityDefinition.getImportFieldDefinitionParse();
+        importExcelEntityDefinition = classEntityDefinition.getImportFieldDefinitionParse();
         //获取读取Excel的初始配置
-        ImportExcelProperties importExcelProperties = classEntityDefinition.getImportExcelProperties();
+        importExcelProperties = classEntityDefinition.getImportExcelProperties();
         //获取所有的sheet页
         List<Sheet> excelSheet = getExcelSheet(workbook, importExcelProperties);
         List<T> entityArray = new ArrayList<>(32);
         try {
             for (Sheet sheet : excelSheet) {
-                getSheetRowsData(sheet,entityArray,importExcelProperties.getRowStartIndex(),
-                        importExcelEntityDefinition,excelEntityClass);
+                getSheetRowsData(sheet,entityArray);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -139,26 +143,22 @@ public class ExcelUtil {
      * 获取对应sheet内全部的数据
      * @param sheet 对应的sheet
      * @param entityArray 数据存放载体
-     * @param startRowIndex 开始的行数
-     * @param <T> 数据类型
      */
-    private static <T> void getSheetRowsData(Sheet sheet,List<T> entityArray,Integer startRowIndex,
-                                             Map<String, BaseImportExcelEntityDefinition> importExcelEntityDefinition,
-                                             Class<T> entityClass) throws IllegalAccessException, InstantiationException {
-        //为了防止数据多 反射获取满 将对应的字段加一个伪缓存
-        Map<String, Field> fieldCache = new HashMap<>(8);
+    private void getSheetRowsData(Sheet sheet,List<T> entityArray) throws IllegalAccessException, InstantiationException {
+        Integer startRowIndex = importExcelProperties.getRowStartIndex();
+
         int rowTotal = sheet.getPhysicalNumberOfRows();
         //逐行读取数据
         for (int rowIndex = startRowIndex; rowIndex < rowTotal; rowIndex++) {
-            T t = entityClass.newInstance();
+            T t = excelEntityClass.newInstance();
             Row row = sheet.getRow(rowIndex);
             //行内数据根据定义读取数据
             importExcelEntityDefinition.forEach((key,value) ->{
-                if(!fieldCache.containsKey(key)){
+                if(!this.fieldCache.containsKey(key)){
                     Field field = ReflectUtils.getField(t, key);
-                    fieldCache.put(key,field);
+                    this.fieldCache.put(key,field);
                 }
-                Field field = fieldCache.get(key);
+                Field field = this.fieldCache.get(key);
                 Integer columnIndex = value.getColumnIndex();
                 //获取该属性对应的列
                 Cell cell = row.getCell(columnIndex);
@@ -182,7 +182,7 @@ public class ExcelUtil {
      * @param object 对应的类对象
      * @return 对应值
      */
-    private static Object formatCellValue(Cell cell,BaseImportExcelEntityDefinition defaultImportExcelEntityDefinition,
+    private Object formatCellValue(Cell cell,BaseImportExcelEntityDefinition defaultImportExcelEntityDefinition,
                                           Object object,Field field){
         Object value = null;
         String dataType = defaultImportExcelEntityDefinition.getDataTypeEnum().getDataType();
@@ -226,7 +226,7 @@ public class ExcelUtil {
      * @param object 对应的类对象
      * @return 返回格式化后的数据
      */
-    private static Object formatTextData(String textData,BaseImportExcelEntityDefinition defaultImportExcelEntityDefinition,
+    private Object formatTextData(String textData,BaseImportExcelEntityDefinition defaultImportExcelEntityDefinition,
                                         Object object){
         if (StringUtils.isEmpty(textData)) {
             return textData;
@@ -269,7 +269,7 @@ public class ExcelUtil {
      * @param importExcelProperties 导入配置
      * @return 返回对应的sheet页
      */
-    private static List<Sheet> getExcelSheet(Workbook workbook,ImportExcelProperties importExcelProperties){
+    private List<Sheet> getExcelSheet(Workbook workbook,ImportExcelProperties importExcelProperties){
         List<Sheet> sheets = new ArrayList<>(8);
         //如果是查询所有的
         if (importExcelProperties.getIsAllSheet()) {
@@ -289,7 +289,7 @@ public class ExcelUtil {
      * @param workbook 工作
      * @return 返回所有的sheet页
      */
-    private static List<Integer> getExcelAllSheetIndex(Workbook workbook){
+    private List<Integer> getExcelAllSheetIndex(Workbook workbook){
         int numberOfSheets = workbook.getNumberOfSheets();
         List<Integer> sheetNumbers = new ArrayList<>(8);
         for (int i = 0; i < numberOfSheets; i++) {
@@ -300,15 +300,9 @@ public class ExcelUtil {
 
     /**
      * TODO exportDefinition还未编写
-     * @param className 全限定名
-     * @param importDefinitionParse 导入的定义
-     * @param exportDefinitionParse 导出的定义
      */
-    private static void setPool(String className,
-                                ImportExcelProperties importExcelProperties,
-                                FieldDefinitionParse importDefinitionParse,
-                                FieldDefinitionParse exportDefinitionParse){
-
+    private void setPool(){
+        String className = excelEntityClass.getName();
         ClassEntityDefinition classEntityDef = ClassEntityDefinition.builder()
                 .className(className)
                 .importExcelProperties(importExcelProperties)
@@ -316,5 +310,23 @@ public class ExcelUtil {
                 .exportFieldDefinitionParse(null)
                 .build();
         DEFINITION_POOL.put(className,classEntityDef);
+    }
+}
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+class User{
+    @ExcelImportField(columnIndex = 0,replace = {"123.*:格式化后的数据"})
+    private String id;
+    @ExcelImportField(columnIndex = 1,dataTypeEnum = DataTypeEnum.NUMBER)
+    private Integer age;
+
+    public static void main(String[] args) throws FileNotFoundException {
+        ImportExcel<User> userImportExcel = new ImportExcel<>(new FileInputStream("C:\\Users\\huangfu\\Desktop/qwe.xlsx"), User.class);
+        List<User> users = userImportExcel.importExcel();
+        users.forEach(e ->{
+            System.out.println(e);
+        });
     }
 }
